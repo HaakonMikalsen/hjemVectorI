@@ -8,7 +8,10 @@ Test for vibrating motors. Experimented with more than one motor at the same tim
 */
 
 
-
+/*
+Un optemized
+sketch uses 3174 bytes (9%) of program storage space. Maximum is 32256 bytes.
+Global variables use 248 bytes (12%) of dynamic memory, leaving 1800 bytes for local variables. Maximum is 2048 bytes.
 
 const int numberOfmotors = 3;
 const int hapticFeedbackPin[numberOfmotors] = {9,10,11};
@@ -18,6 +21,58 @@ const int stepCount = 25;
 int steps[stepCount];
 int prevPotVal = 0;
 const int vibrationDuration =100;
+*/
+
+
+/*
+Variable type optemized
+ketch uses 3148 bytes (9%) of program storage space. Maximum is 32256 bytes.
+Global variables use 243 bytes (11%) of dynamic memory, leaving 1805 bytes for local variables. Maximum is 2048 bytes.
+
+const byte numberOfmotors = 3;
+const byte hapticFeedbackPin[numberOfmotors] = {9,10,11};
+byte motorIndex = 0;
+const byte potPin = A0;
+const byte stepCount = 25;
+int steps[stepCount];
+int prevPotVal = 0;
+const byte vibrationDuration =100;
+
+Note:
+Some imporvemt. Definitvly good if memory becomes problem later
+
+*/
+
+/*
+Program mem Optimized + Variable type
+Sketch uses 3150 bytes (9%) of program storage space. Maximum is 32256 bytes.
+Global variables use 241 bytes (11%) of dynamic memory, leaving 1807 bytes for local variables. Maximum is 2048 bytes.
+
+#include <avr/pgmspace.h>
+
+const PROGMEM byte numberOfmotors = 3;
+const PROGMEM byte hapticFeedbackPin[numberOfmotors] = {9,10,11};
+byte motorIndex = 0;
+const PROGMEM byte potPin = A0;
+const PROGMEM byte stepCount = 25;
+int steps[stepCount];
+int prevPotVal = 0;
+const PROGMEM byte vibrationDuration =100;
+
+Note:
+Memeory improvemt was small and uses more flash memory wich could be a problem later
+*/
+
+#include <avr/pgmspace.h>
+
+const PROGMEM byte numberOfmotors = 3;
+const PROGMEM byte hapticFeedbackPin[numberOfmotors] = {9,10,11};
+byte motorIndex = 0;
+const PROGMEM byte potPin = A0;
+const PROGMEM byte stepCount = 25;
+int steps[stepCount];
+int prevPotVal = 0;
+const PROGMEM byte vibrationDuration =100;
 
 void setup() {
   Serial.begin(9600);
@@ -33,7 +88,7 @@ void setup() {
 
 }
 
-void vibrate(int duration){
+void vibrate(const int duration){
   int tenthDuration = floor(duration/10);
   const int pin = hapticFeedbackPin[motorIndex];
   digitalWrite(pin, HIGH);
@@ -78,4 +133,6 @@ void loop() {
   }
   prevPotVal = potVal;
   Serial.println(potVal);
+
+  // vibrate(5000);
 }
